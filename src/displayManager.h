@@ -23,7 +23,7 @@ class DisplayManager
 
     }
 
-    bool Begin()
+    bool begin()
     {
         display_.init();
         display_.setRotation(3);
@@ -39,6 +39,8 @@ class DisplayManager
         Serial.println("DisplayManager initialised.");
         return true;
     }
+
+    
 
     TFT_eSPI& getDisplay()
     {
