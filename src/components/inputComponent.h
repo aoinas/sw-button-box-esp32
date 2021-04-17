@@ -14,8 +14,10 @@ class InputComponent
         _listenerCount(0),
         _component(component)  
     {
-        
     }
+
+    virtual void onLoop() = 0;
+    virtual const char* getName() const = 0; 
 
     bool RegisterListener(const IInputListener* listener)
     {
@@ -24,7 +26,9 @@ class InputComponent
             _listeners[_listenerCount] = listener;
             _listenerCount++;
             char s[100];
-            sprintf(s, "Registered listener %s", listener->getTypeName());
+            sprintf(s, "Registered listener %s for component %s", 
+                listener->getTypeName(),
+                getName());
             Serial.println(s);
             return true;
         }
