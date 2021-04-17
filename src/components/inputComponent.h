@@ -1,12 +1,13 @@
 #pragma once
 #include <Arduino.h>
 
+#include "iInputComponent.h"
 #include "componentIds.h"
 #include "../listeners/iInputListener.h"
 
 #define MAX_LISTENER_COUNT 2
 
-class InputComponent
+class InputComponent : public IInputComponent
 {
     public:
     InputComponent(Component component) : 
@@ -26,7 +27,7 @@ class InputComponent
             _listeners[_listenerCount] = listener;
             _listenerCount++;
             char s[100];
-            sprintf(s, "Registered listener %s for component %s", 
+            sprintf(s, "Registered listener '%s' for component '%s'", 
                 listener->getTypeName(),
                 getName());
             Serial.println(s);
@@ -42,7 +43,7 @@ class InputComponent
     bool NotifyListeners(EventType event)
     {
         for (uint8_t i=0; i < _listenerCount; i++)
-            _listeners[i]->onComponentEvent(_component, event);
+            _listeners[i]->onComponentEvent(this, event);
 
         return true;
     }

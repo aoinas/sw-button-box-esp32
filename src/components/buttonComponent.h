@@ -10,7 +10,7 @@ class ButtonComponent : public InputComponent
     ButtonComponent(uint8_t pin, Component component, bool isInversed = false) : 
         InputComponent(component), 
         _pin(pin), 
-        _state(LOW), 
+        _isPressed(false), 
         _isInversed(isInversed),
         _componentName("")
     {
@@ -26,20 +26,23 @@ class ButtonComponent : public InputComponent
 
     virtual void onLoop() override
     {
-        Serial.printf("onLoop: Button %d", _pin);
-        int currentState = digitalRead(_pin);
+        //Serial.printf("onLoop: Button %d", _pin);
+        int currentState = digitalRead(_pin) ;
 
-        if ( currentState != _state)
+        bool isCurrentlyPressed = currentState == _isInversed ? LOW : HIGH;
+
+
+        if ( isCurrentlyPressed != _isPressed)
         {
-            _state = currentState;
-            NotifyListeners(_state == HIGH ? kButtonPressed : kButtonReleased);
+            _isPressed = isCurrentlyPressed;
+            NotifyListeners(_isPressed ? kButtonPressed : kButtonReleased);
         }
     }
 
     private:
     uint8_t _pin;
-    int _state; // TODO: refactor to bool _pressed. handle isInversed better
-    bool _isInversed; // Does low mean pressed?
+    bool _isPressed; 
+    bool _isInversed; 
     char _componentName[50];
    
 };

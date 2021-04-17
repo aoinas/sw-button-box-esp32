@@ -30,6 +30,8 @@ static void registerListeners(Vector<InputComponent*>& components)
   }
 } 
 
+ButtonComponent leftBtn(PIN_BUILT_IN_BTN_LEFT, Component::kBuiltinButtonLeft, true);
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -37,29 +39,28 @@ void setup() {
   m_InputComponents.setStorage(m_InputComponentsContainer);
 
   // Create input components
-  m_InputComponents.push_back(new ButtonComponent(PIN_BUILT_IN_BTN_LEFT, Component::kBuiltinButtonLeft, true));
   m_InputComponents.push_back(new ButtonComponent(PIN_BUILT_IN_BTN_RIGHT, Component::kBuiltinButtonRight, true));
+  m_InputComponents.push_back(&leftBtn);
  
   registerListeners(m_InputComponents);
+
+  Serial.println("Input components:");
+  for (auto c : m_InputComponents)
+  {
+    Serial.printf("- %s", c->getName());
+    Serial.println();
+  }
 }
 
 
 void loop() {
 
-  /* for (auto c : m_InputComponents)
+  for (auto c : m_InputComponents)
     c->onLoop();
- */
-  //for (int i=0; i < m_InputComponents.size(); i++)
-   // m_InputComponents.at(i)->onLoop();
-    //m_InputComponents[i]->onLoop();
-
-  m_InputComponents[0]->onLoop();
-  m_InputComponents[1]->onLoop();
-
-  int currentState = digitalRead(PIN_BUILT_IN_BTN_LEFT);
-
+  
+/*   int currentState = digitalRead(PIN_BUILT_IN_BTN_LEFT);
   Serial.printf("Left btn pin status %i", currentState);
-  Serial.println();
-
-  delay(2000);
+  Serial.println(currentState);
+ */
+  delay(100);
 }
