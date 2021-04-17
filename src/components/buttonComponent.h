@@ -7,22 +7,31 @@
 class ButtonComponent : public InputComponent
 {
     public:
-    ButtonComponent(uint8_t pin, Component component, bool isInversed = false) : 
+    ButtonComponent(    uint8_t pin, 
+                        Component component, 
+                        uint8_t gamePadButtonNo, 
+                        bool isInversed = false) : 
         InputComponent(component), 
         _pin(pin), 
         _isPressed(false), 
+        _gamePadButtonNo(gamePadButtonNo),
         _isInversed(isInversed),
         _componentName("")
     {
         pinMode(_pin, INPUT);
 
-        sprintf(_componentName, "Button on pin %d", _pin);
+        sprintf(    _componentName, 
+                    "Button on pin %d, binded to gamepad button %d",
+                     _pin, 
+                     _gamePadButtonNo);
     }
 
     virtual const char* getName() const override
     {
         return _componentName;
     }
+
+    uint8_t getButton() const { return _gamePadButtonNo; }
 
     virtual void onLoop() override
     {
@@ -41,9 +50,11 @@ class ButtonComponent : public InputComponent
 
     private:
     uint8_t _pin;
-    bool _isPressed; 
+    bool _isPressed;
+    uint8_t _gamePadButtonNo; 
     bool _isInversed; 
     char _componentName[50];
+    
    
 };
 

@@ -6,6 +6,7 @@
 #include "components/buttonComponent.h"
 #include "components/componentIds.h"
 #include "listeners/iInputListener.h"
+#include "listeners/bleGamepadListener.h"
 #include "listeners/serialInputListener.h"
 #include "listeners/LedListener.h"
 
@@ -17,16 +18,19 @@ Vector<InputComponent*> m_InputComponents;
 InputComponent* m_InputComponentsContainer[MAX_INPUT_COMPONENT_COUNT];
 
 DisplayManager m_DisplayManager;
-// TODO: Refactor these into an array
 
 // Listeners
+BleGamepadListener m_BleGamePadListener(MAX_INPUT_COMPONENT_COUNT);
 SerialInputListener m_SerialInputListener;
+
 
 static void registerListeners(Vector<InputComponent*>& components)
 {
   for (int i=0; i<components.size(); i++)
   {
+    m_InputComponents[i]->RegisterListener(&m_BleGamePadListener);
     m_InputComponents[i]->RegisterListener(&m_SerialInputListener);
+    
   }
 } 
 

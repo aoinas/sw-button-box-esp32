@@ -6,7 +6,9 @@
 class SerialInputListener : public IInputListener
 {
     virtual const char* getTypeName() const override { return "Serial Input Listener"; }
-    virtual const void onComponentEvent(const IInputComponent* component, EventType event) const override
+    virtual const void onComponentEvent(const IInputComponent* component, 
+                                        EventType event,
+                                        uint8_t outputButton) override
     {
         //Serial.println("SerialInputListener::onComponentEvent: Start");
         
@@ -21,14 +23,17 @@ class SerialInputListener : public IInputListener
         case kButtonReleased:
             eventName = "released";
             break;
-    
+
         default:
             eventName = "done something, but dunno what";
             break;
         }
 
         char msg[200];
-        sprintf(msg, "%s was %s", component->getName(), eventName );
+        sprintf(msg, "%s was %s. Output button: %d", 
+                component->getName(), 
+                eventName,
+                outputButton );
         Serial.println(msg);
 
     }

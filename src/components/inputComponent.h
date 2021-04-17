@@ -40,7 +40,7 @@ class InputComponent : public IInputComponent
         }
     }
 
-    bool NotifyListeners(EventType event)
+    bool NotifyListeners(EventType event) const
     {
         for (uint8_t i=0; i < _listenerCount; i++)
             _listeners[i]->onComponentEvent(this, event);
